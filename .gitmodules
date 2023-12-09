@@ -1,0 +1,3 @@
+[submodule "Bug"]
+	path = Bug
+	url = https://github.com/Auz/Bug.git
