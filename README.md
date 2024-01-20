@@ -3,9 +3,13 @@ Scoreboard that has each of our team's matches
 * RP
 * Next match with all of the teams in it
 
+# Getting started
+* Install ruby and bundler
+* Run `run.bat`
+
 # Git stuffs
 ## Cloning
-* `git clone --recursive [repo location]` -- this clones the git submodules inside this folder
+* `git clone [repo location]`
 ## Commiting
 * `git add.`
 * `git commit -m "[message]"`
@@ -13,12 +17,15 @@ Scoreboard that has each of our team's matches
 ## Pulling
 * `git stash` -- This saves your current progress before you pull new code
 * `git pull`
+* `git stash pop`
 * **You may need to go through merges!**
 
 # Structure
 ## Base folder
 * App (driver code)
 * Gemfile (all of the libraries needed to run `app.rb`)
+## Public
+* Stores all of javascript and images
 ## Views
 * This is where all of the code for the webpages needs to be
 * Any javascript that is written must be put in a seperate folder (likely `/javascript`) from the root folder
