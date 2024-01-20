@@ -1,4 +1,11 @@
-<h1>Event data</h1>
+<div class="row my-2">
+  <div class="col-8">
+    <h1>Event data</h1>
+  </div>
+  <div class="col-4">
+    <h1>average rp: <strong id="average-rp">0</strong></h1>
+  </div>
+</div>
 <button onclick="update()">Update data</button>
 <% @matches.each_slice(6) do |match_group| %>
   <div class="row my-2">
@@ -16,12 +23,21 @@
 <% end %>
 <script type="text/javascript">
   function update() {
+    let arp = 0
+    let len = 0
     axios.get(`${window.location.origin}/update`).then((response) => {
-      response.forEach(match => {
-        match.forEach(team => {
-          $(`qm-${team['team_num']}-${match['match_num']}`).innerHTML = team['rp']
+      response["data"].forEach(match => {
+        match["teams"].forEach(team => {
+          if (team['team_num'] == 461){
+            console.log(arp)
+            arp += team['rp']
+            len++
+          }
+          let element = document.getElementById(`rp-${team['team_num']}-${match['match_num']}`)
+          element.innerHTML = team['rp']
         })
-      });
+      })
+      document.getElementById("average-rp").innerHTML = (Math.round((arp/len) * 100) / 100).toFixed(2)
     })
   }
 </script>
