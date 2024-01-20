@@ -42,7 +42,7 @@ get '/update' do #update the scores as needed
   threads = []
   $matches.each do |match|
     match[:teams].each do |team|
-      threads << Thread.new { team[:rp] ||= fetch(match[:match_num].match(/\d+/)[0].to_i) }
+      threads << Thread.new { fetch(match[:match_num].match(/\d+/)[0].to_i) }
     end
   end
 
@@ -65,8 +65,17 @@ def fetch match_num #helper method to fetch match results and return rp from a m
                 .headers('Content-Type': 'application/json')
                 .get("#{$base}/#{$season}/scores/#{$event_key}/qual?matchNumber=#{match_num}")
   puts "#{$base}/#{$season}/scores/#{$event_key}/qual?matchNumber=#{match_num}"
-  JSON.parse(request.body)['MatchScores'][0]['alliances'][color_to_number($matches)]['rp']
+  alliance_data = JSON.parse(request.body)['MatchScores'][0]['alliances']
+  $matches.each do |match|
+    if match[:match_num].match(/\d+/)[0] == match_num
+      match[:teams].each do |team|
+        team[:rp] ||= alliance_data[color_to_number(team[:alliance])]['rp']
+      end
+    end
+  end
+  [color_to_number($matches)]['rp']
 end
+#variable["MatchScores"][0]["alliances"][color_to_number($matches[0][:teams][1])]['rp']
 
 def get_matches #[{match_num, teams: [{team_num, alliance, rp}]}]
   request = HTTP.basic_auth(user: $username, pass: $password)
