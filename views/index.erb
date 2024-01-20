@@ -1,0 +1,27 @@
+<h1>Event data</h1>
+<button onclick="update()">Update data</button>
+<% @matches.each_slice(6) do |match_group| %>
+  <div class="row my-2">
+    <% match_group.each do |match| %>
+      <div class="col-2">
+        <p><strong><%= match[:match_num] %></strong></p>
+        <% match[:teams].sort!{ |a, b| a[:team_num] <=> b[:team_num] }.sort!{ |a, b| b[:alliance] <=> a[:alliance] }.each do |m| %>
+          <div style="color: <%= m[:alliance].downcase %>">
+            <p><%= m[:team_num] %> RP: <strong id="rp-<%= "#{m[:team_num]}-#{match[:match_num]}" %>"><%= m[:rp] %></strong></p>
+          </div>
+        <% end %>
+      </div>
+    <% end %>
+  </div>
+<% end %>
+<script type="text/javascript">
+  function update() {
+    axios.get(`${window.location.origin}/update`).then((response) => {
+      response.forEach(match => {
+        match.forEach(team => {
+          $(`qm-${team['team_num']}-${match['match_num']}`).innerHTML = team['rp']
+        })
+      });
+    })
+  }
+</script>
