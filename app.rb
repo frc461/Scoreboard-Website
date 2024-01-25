@@ -3,6 +3,7 @@ require 'sinatra'
 require 'puma'
 require 'http'
 require 'json'
+require 'date'
 require 'pry'
 
 #global variables for querying the api
@@ -16,6 +17,25 @@ $matches = []
 helpers do
   def input(type, name, placeholder)
     "<p><input type=\"#{type}\" name=\"#{name}\" placeholder=\"#{placeholder}\"></p>"
+  end
+
+  def human_date(day_num) #give the name of the day of the week given the wday number
+    switch day_num
+    case 0
+      'Sunday'
+    case 1
+      'Monday'
+    case 2
+      'Tuesday'
+    case 3
+      'Wendesday'
+    case 4
+      'Thursday'
+    case 5
+      'Friday'
+    case 6
+      'Saturday'
+    end
   end
 end
 
