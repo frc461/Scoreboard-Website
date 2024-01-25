@@ -12,7 +12,8 @@
     <% match_group.each do |match| %>
       <div class="col-2">
         <p><strong><%= match[:match_num] %></strong></p>
-        <% match[:teams].sort!{ |a, b| a[:team_num] <=> b[:team_num] }.sort!{ |a, b| b[:alliance] <=> a[:alliance] }.each do |m| %>
+        <p>Scores: <strong id="score-<%= match[:match_num] %>-Red" style="color: red"><%= match[:teams][0][:score] %></strong> - <strong id="score-<%= match[:match_num] %>-Blue" style="color: blue"><%= match[:teams][1][:score] %></strong></p>
+        <% match[:teams].each do |m| %>
           <div style="color: <%= m[:alliance].downcase %>">
             <p><%= m[:team_num] %> RP: <strong id="rp-<%= "#{m[:team_num]}-#{match[:match_num]}" %>"><%= m[:rp] %></strong></p>
           </div>
@@ -21,6 +22,7 @@
     <% end %>
   </div>
 <% end %>
+
 <script type="text/javascript">
   function update() {
     let arp = 0
@@ -29,12 +31,13 @@
       response["data"].forEach(match => {
         match["teams"].forEach(team => {
           if (team['team_num'] == 461){
-            console.log(arp)
             arp += team['rp']
             len++
           }
           let element = document.getElementById(`rp-${team['team_num']}-${match['match_num']}`)
           element.innerHTML = team['rp']
+          element = document.getElementById(`score-${match['match_num']}-${team['alliance']}`)
+          element.innerHTML = team['score']
         })
       })
       document.getElementById("average-rp").innerHTML = (Math.round((arp/len) * 100) / 100).toFixed(2)
