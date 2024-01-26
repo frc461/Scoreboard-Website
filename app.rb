@@ -69,7 +69,7 @@ get '/update' do #update the scores as needed
     t.join
   end
 
-  [$matches.to_json, get_ranking]
+  [$matches.to_json, get_ranking].to_json
 end
 
 def color_to_number color
@@ -116,7 +116,6 @@ def get_ranking
   request = HTTP.basic_auth(user: $username, pass: $password)
                 .headers('Content-Type': 'application/json')
                 .get("#{$base}/#{$season}/rankings/#{$event_key}?teamNumber=461")
-                puts "#{$base}/#{$season}/rankings/#{$event_key}?teamNumber=461"
   JSON.parse(request.body)["Rankings"][0]["rank"]
 end
 
