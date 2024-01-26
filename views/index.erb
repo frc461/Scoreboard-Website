@@ -12,6 +12,8 @@
     <% match_group.each do |match| %>
       <div class="col-2">
         <p><strong><%= match[:match_num] %></strong></p>
+        <% time = match[:start_time] %>
+        <p><%= "#{time.strftime "%A %R"}" %></p>  
         <p>Scores: <strong id="score-<%= match[:match_num] %>-Red" style="color: red"><%= match[:teams][0][:score] %></strong> - <strong id="score-<%= match[:match_num] %>-Blue" style="color: blue"><%= match[:teams][1][:score] %></strong></p>
         <% match[:teams].each do |m| %>
           <div style="color: <%= m[:alliance].downcase %>">

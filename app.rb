@@ -20,20 +20,20 @@ helpers do
   end
 
   def human_date(day_num) #give the name of the day of the week given the wday number
-    switch day_num
-    case 0
+    case day_num
+    when 0
       'Sunday'
-    case 1
+    when 1
       'Monday'
-    case 2
+    when 2
       'Tuesday'
-    case 3
-      'Wendesday'
-    case 4
+    when 3
+      'Wednesday'
+    when 4
       'Thursday'
-    case 5
+    when 5
       'Friday'
-    case 6
+    when 6
       'Saturday'
     end
   end
@@ -96,12 +96,12 @@ def fetch match_num #helper method to fetch match results and return rp from a m
 end
 #variable["MatchScores"][0]["alliances"][color_to_number($matches[0][:teams][1])]['rp']
 
-def get_matches #[{match_num, teams: [{team_num, alliance, rp, score}]}]
+def get_matches #[{start_time, match_num, teams: [{team_num, alliance, rp, score}]}]
   request = HTTP.basic_auth(user: $username, pass: $password)
                 .headers('Content-Type': 'application/json')
                 .get("#{$base}/#{$season}/schedule/#{$event_key}?tournamentLevel=Qualification&teamNumber=461")
   JSON.parse(request.body)["Schedule"].each do |match| #the structure of the response is silly, but this will find the alliance color
-    match_data = {match_num: "qm#{sprintf('%02d', match['matchNumber'])}", teams: []}
+    match_data = {start_time: DateTime.parse(match['startTime']), match_num: "qm#{sprintf('%02d', match['matchNumber'])}", teams: []}
     match['teams'].each do |team|
       match_data[:teams] << {team_num: team['teamNumber'], alliance: team['station'].match(/\D+/)[0], rp: false, score: 0}
     end
