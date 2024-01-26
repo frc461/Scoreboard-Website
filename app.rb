@@ -55,6 +55,7 @@ end
 
 get '/schedule' do
   @matches = $matches
+  @rank = 1
   erb :index
 end
 
@@ -67,7 +68,8 @@ get '/update' do #update the scores as needed
   threads.each do |t|
     t.join
   end
-  $matches.to_json
+
+  [$matches.to_json, get_ranking]
 end
 
 def color_to_number color
@@ -108,6 +110,14 @@ def get_matches #[{start_time, match_num, teams: [{team_num, alliance, rp, score
     $matches << match_data
   end
   sort_matches
+end
+
+def get_ranking
+  request = HTTP.basic_auth(user: $username, pass: $password)
+                .headers('Content-Type': 'application/json')
+                .get("#{$base}/#{$season}/rankings/#{$event_key}?teamNumber=461")
+                puts "#{$base}/#{$season}/rankings/#{$event_key}?teamNumber=461"
+  JSON.parse(request.body)["Rankings"][0]["rank"]
 end
 
 def sort_matches
