@@ -8,6 +8,6 @@ t = Thread.new{ 'ruby app.rb' }
 
 sleep 5
 
-'start microsoft-edge:http://127.0.0.1.4567/'
+'start microsoft-edge:http://127.0.0.1:4567/'
 t.join
 
