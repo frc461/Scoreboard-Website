@@ -1,0 +1,14 @@
+.upcoming-match {
+  border-radius: 3px;
+  border-color: red;
+}
+
+.won-match {
+  background-color: green;
+  /* change transparency to something light */
+}
+
+.lost-match {
+  background-color: red;
+  /* change transperency to clearer */
+}
