@@ -11,7 +11,7 @@ $base = 'https://frc-api.firstinspires.org/v3.0'
 $username = "scarlett"
 $password = "65aff4eb-f687-4b6f-b793-445667d4965d"
 $event_key = ''
-$season = 2023 #Time.new.year
+$season = Time.new.year
 $matches = []
 
 helpers do
